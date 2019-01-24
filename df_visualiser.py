@@ -19,24 +19,27 @@ def get_subprocess_out(command):
 def parse_df(output):
     cleanLine = []
     output = output.split("\n")
+    maxname = 0
 
     for line in output:
         if line != "" and "Filesystem" not in line:
             name = line.split()[0]
+            maxname = max(len(name), maxname)
             percentage = re.search(
                 '([0-9]{1,3})%',
                 line
             ).group(0).replace("%", "")
             cleanLine.append([name, percentage])
 
-    return cleanLine
+    return maxname, cleanLine
 
 
-def show_bar(cleanLine):
+def show_bar(maxname, cleanLine):
     for line in cleanLine:
         percentage = int(line[1])
-        print("{:25}{}{}{}{}{}".format(
+        print("{:{}}{}{}{}{}{}".format(
             line[0],
+            maxname+2,
             bcolors.green,
             chr(9724)*percentage,
             bcolors.grey,
@@ -47,7 +50,8 @@ def show_bar(cleanLine):
 
 def main():
     output = get_subprocess_out("df -h")[0].decode("utf-8")
-    show_bar(parse_df(output))
+    maxname, cleanLine = parse_df(output)
+    show_bar(maxname, cleanLine)
 
 
 if __name__ == "__main__":
