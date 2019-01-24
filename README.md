@@ -1,3 +1,3 @@
-## Linux Disk Free Visualiser
+## Disk Free Visualiser
 
-A simple python command line interface to visually represent the `df` output
+A simple python interface to visually represent the `df` output
