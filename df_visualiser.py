@@ -1,4 +1,5 @@
 import subprocess
+import re
 
 
 class bcolors:
@@ -20,10 +21,13 @@ def parse_df(output):
     output = output.split("\n")
 
     for line in output:
-        if "Filesystem" not in line:
-            line = line.split()
-            if len(line) >= 4 and line[4].find('%') != -1:
-                cleanLine.append([line[0], line[4].replace("%", "")])
+        if line != "" and "Filesystem" not in line:
+            name = line.split()[0]
+            percentage = re.search(
+                '([0-9]{1,3})%',
+                line
+            ).group(0).replace("%", "")
+            cleanLine.append([name, percentage])
 
     return cleanLine
 
@@ -31,9 +35,14 @@ def parse_df(output):
 def show_bar(cleanLine):
     for line in cleanLine:
         percentage = int(line[1])
-        print("{:25}{}{}{}{}{}".format(line[0], bcolors.green,
-                                       chr(9724)*percentage, bcolors.grey, chr(9724)*(100-percentage), bcolors.end))
-        # 9608 full block; 9607 seventh eight block; 9724 smaller rectangle
+        print("{:25}{}{}{}{}{}".format(
+            line[0],
+            bcolors.green,
+            chr(9724)*percentage,
+            bcolors.grey,
+            chr(9724)*(100-percentage),
+            bcolors.end)
+        )  # 9608 full block; 9607 seventh eight block; 9724 smaller rectangle
 
 
 def main():
