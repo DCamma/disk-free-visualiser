@@ -98,13 +98,19 @@ def main():
         try:
             color = int(sys.argv[sys.argv.index("-c")+1]) % 17
         except ValueError:
-            print(
-                f"{bashColor[4]}Ignored invalid argument for \'color\'. Default set to {color}{bashColor[99]}")
+            print("{}Ignored invalid argument for \'color\'. Default set to {}{}".format(
+                bashColor[4],
+                color,
+                bashColor[99]
+            ))
         try:
             divisor = int(sys.argv[sys.argv.index("-l")+1])
         except ValueError:
-            print(
-                f"{bashColor[4]}Ignored invalid argument for \'divisor\'. Default set to {divisor}{bashColor[99]}")
+            print("{}Ignored invalid argument for \'divisor\'. Default set to {}{}".format(
+                bashColor[4],
+                divisor,
+                bashColor[99]
+            ))
 
     output = get_subprocess_out("df -h")[0].decode("utf-8")
     max_len, clean_line = parse_df(output)
