@@ -95,22 +95,26 @@ def main():
     color = 0
     divisor = 1
     if len(sys.argv) > 1:
-        try:
-            color = int(sys.argv[sys.argv.index("-c")+1]) % 17
-        except ValueError:
-            print("{}Ignored invalid argument for \'color\'. Default set to {}{}".format(
-                bashColor[4],
-                color,
-                bashColor[99]
-            ))
-        try:
-            divisor = int(sys.argv[sys.argv.index("-l")+1])
-        except ValueError:
-            print("{}Ignored invalid argument for \'divisor\'. Default set to {}{}".format(
-                bashColor[4],
-                divisor,
-                bashColor[99]
-            ))
+        c_index = "-c" in sys.argv
+        l_index = "-l" in sys.argv
+        if c_index:
+            try:
+                color = int(sys.argv[sys.argv.index("-c")+1]) % 17
+            except ValueError:
+                print("{}Ignored invalid argument for \'color\'. Default set to {}{}".format(
+                    bashColor[4],
+                    color,
+                    bashColor[99]
+                ))
+        if l_index:
+            try:
+                divisor = int(sys.argv[sys.argv.index("-l")+1])
+            except ValueError:
+                print("{}Ignored invalid argument for \'divisor\'. Default set to {}{}".format(
+                    bashColor[4],
+                    divisor,
+                    bashColor[99]
+                ))
 
     output = get_subprocess_out("df -h")[0].decode("utf-8")
     max_len, clean_line = parse_df(output)
