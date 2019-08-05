@@ -48,7 +48,6 @@ def parse_df(output):
     header = output[0].split()
     i_available = header.index('Avail')
     i_size = header.index('Size')
-
     len_header = len(header)
 
     for line in output:
@@ -65,7 +64,11 @@ def parse_df(output):
                 name = name+" "+line[1]
             max_len = max(len(name), max_len)
             clean_line.append(PartitionInfo(
-                name, int(percentage), line[i_available+pad], line[i_size+pad]))
+                name,
+                int(percentage),
+                line[i_available+pad],
+                line[i_size+pad])
+            )
 
     return max_len, clean_line
 
